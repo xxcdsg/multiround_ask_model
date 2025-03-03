@@ -1,16 +1,25 @@
-# 这是一个示例 Python 脚本。
+from urllib3.filepost import writer
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
+import write_string
+from _input_ import _input_
+from ask_one import ask_one
+from merge_all import merge_all
+from multi_process import multi_process
 
-
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
-
-
-# 按装订区域中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    api_key, key_word, word_list = _input_()
 
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+    """
+    for word in word_list:
+        try:
+            response_word = ask_one(api_key,key_word, word)
+        except Exception as e:  # 捕获异常并记录错误信息
+            response_word = "error"
+            print(f"An error occurred while processing '{word}': {e}")
+        print("Note:\n" , word , "\n" , response_word)
+        response_word_list.append(response_word)
+    """
+
+    response_word_list = multi_process(api_key,key_word,word_list)
+    final_string = merge_all(word_list, response_word_list)
+    write_string.write_final_string_to_file(final_string)
