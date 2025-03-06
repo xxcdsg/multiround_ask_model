@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "多线程下载工具"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "多线程大模型询问工具"))
         self.label_apiKey.setText(_translate("MainWindow", "输入 api_key"))
         self.label_keyWord.setText(_translate("MainWindow", "输入 key_word"))
         self.label_words.setText(_translate("MainWindow", "输入 words"))
