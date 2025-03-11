@@ -73,7 +73,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_thread.addWidget(self.spinBox_thread)
         self.gridLayout.addLayout(self.horizontalLayout_thread, 3, 0, 1, 5)
 
-        # 第五行：按钮
+        # 第五行：模型选择
+        self.groupBox_model = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_model.setObjectName("groupBox_model")
+        self.horizontalLayout_model = QtWidgets.QHBoxLayout(self.groupBox_model)
+
+        self.radio_chat = QtWidgets.QRadioButton(self.groupBox_model)
+        self.radio_chat.setChecked(True)  # 默认选中chat模型
+        self.radio_chat.setObjectName("radio_chat")
+        self.horizontalLayout_model.addWidget(self.radio_chat)
+
+        self.radio_reason = QtWidgets.QRadioButton(self.groupBox_model)
+        self.radio_reason.setObjectName("radio_reason")
+        self.horizontalLayout_model.addWidget(self.radio_reason)
+
+        self.gridLayout.addWidget(self.groupBox_model, 4, 0, 1, 5)  # 插入到第4行
+
+        # 第六行：按钮
         self.horizontalLayout_buttons = QtWidgets.QHBoxLayout()
         self.horizontalLayout_buttons.setObjectName("horizontalLayout_buttons")
 
@@ -89,13 +105,13 @@ class Ui_MainWindow(object):
         self.pushButton_exit.setObjectName("pushButton_exit")
         self.horizontalLayout_buttons.addWidget(self.pushButton_exit)
 
-        self.gridLayout.addLayout(self.horizontalLayout_buttons, 4, 0, 1, 5)
+        self.gridLayout.addLayout(self.horizontalLayout_buttons, 5, 0, 1, 5)
 
         # 信息显示框
 
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setObjectName("textBrowser")
-        self.gridLayout.addWidget(self.textBrowser, 5, 0, 1, 5)
+        self.gridLayout.addWidget(self.textBrowser, 6, 0, 1, 5)
 
         # 中央窗口部件设置
         MainWindow.setCentralWidget(self.centralwidget)
@@ -122,3 +138,7 @@ class Ui_MainWindow(object):
         self.pushButton_start.setText(_translate("MainWindow", "开始"))
         self.pushButton_openDir.setText(_translate("MainWindow", "打开下载目录"))
         self.pushButton_exit.setText(_translate("MainWindow", "退出"))
+        self.groupBox_model.setTitle(_translate("MainWindow", "模型选择"))
+        self.radio_chat.setText(_translate("MainWindow", "deepseek-chat"))
+        self.radio_reason.setText(_translate("MainWindow", "deepseek-reasoner"))
+

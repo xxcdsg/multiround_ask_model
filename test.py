@@ -1,57 +1,31 @@
-import multiprocessing as mp
-import time
-import random
+MOD = 998244353
 
+n, q = map(int, input().split())
+s = list(input().strip())
 
-def reader_proc(id, shared_data, read_count, mutex, wrt):
-    time.sleep(random.uniform(0.1, 0.5))
+# Initial count of '1's
+C1 = s.count('1')
 
-    mutex.acquire()
-    read_count.value += 1
-    if read_count.value == 1:
-        wrt.acquire()
-    mutex.release()
+# Precompute 2^(n-4) mod MOD, handling negative exponents
+exponent = n - 4
+if exponent >= 0:
+    pow_2 = pow(2, exponent, MOD)
+else:
+    inv_exponent = -exponent
+    inv_val = pow(2, inv_exponent, MOD)
+    pow_2 = pow(inv_val, MOD - 2, MOD)
 
-    print(f"Reader {id} reads: {shared_data.value.decode()}")
-    time.sleep(0.5)
+for _ in range(q):
+    i = int(input()) - 1  # Convert to 0-based index
+    if s[i] == '1':
+        C1 -= 1
+        s[i] = '0'
+    else:
+        C1 += 1
+        s[i] = '1'
 
-    mutex.acquire()
-    read_count.value -= 1
-    if read_count.value == 0:
-        wrt.release()
-    mutex.release()
-
-
-def writer_proc(id, shared_data, wrt):
-    time.sleep(random.uniform(0.1, 0.5))
-
-    wrt.acquire()
-    msg = f"W{id}"
-    shared_data.value = msg.encode()
-    print(f"Writer {id} writes: {msg}")
-    wrt.release()
-
-
-if __name__ == "__main__":
-    # 使用Manager统一管理共享对象
-    manager = mp.Manager()
-    shared_data = manager.Value('c', b' ' * 100)  # 字符值
-    read_count = manager.Value('i', 0)
-    mutex = manager.Semaphore(1)
-    wrt = manager.Semaphore(1)
-
-    processes = []
-    # 创建进程时显式传递共享对象
-    for i in range(3):
-        p = mp.Process(target=writer_proc, args=(i, shared_data, wrt))
-        processes.append(p)
-    for i in range(5):
-        p = mp.Process(target=reader_proc, args=(i, shared_data, read_count, mutex, wrt))
-        processes.append(p)
-
-    for p in processes:
-        p.start()
-    for p in processes:
-        p.join()
-
-    print("Final data:", shared_data.value.decode())
+    sum_a = (2 * C1 - n) % MOD
+    sum_a_squared = (sum_a * sum_a) % MOD
+    term = (sum_a_squared + n - 2) % MOD
+    ans = (pow_2 * term) % MOD
+    print(ans)

@@ -47,17 +47,19 @@ class UIM_Version(UIM, QtWidgets.QWidget):
 
     def send(self):
 
-
-
         # 获取参数
         api = self.lineEdit_apiKey.text()
         word = self.lineEdit_keyWord.text()
         words_string = self.lineEdit_words.text()
+        selected_text = ""
+        for radio in [self.radio_chat,self.radio_reason]:
+            if radio.isChecked():
+                selected_text = radio.text()
         words = [word.strip() for word in words_string.split(',')]
         thread_num = int(self.spinBox_thread.text())
 
 
-        self.backend = BackendThread(api,word,words,thread_num)  # 初始化线程类
+        self.backend = BackendThread(api,word,words,thread_num,selected_text)  # 初始化线程类
         self.backend.update_data.connect(self.console_append)  # 连接线程类的输出与窗体的输出
 
         self.backend.start()  # 线程类启动

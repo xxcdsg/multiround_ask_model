@@ -11,8 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class BackendThread(QtCore.QThread):
     update_data = QtCore.pyqtSignal(str)
 
-    def __init__(self,api_key,key_word,words,thread_num):
+    def __init__(self,api_key,key_word,words,thread_num,selected_model):
         super(BackendThread,self).__init__()
+        self.selected_model = selected_model
         self.api_key = api_key
         self.key_word = key_word
         self.words = words
@@ -54,7 +55,7 @@ class BackendThread(QtCore.QThread):
             (word, index) = self.ask_queue.get()
             try:
                 self.return_msg(f"正在询问{word}")
-                self.ans[index] = ask_one(self.api_key,self.key_word,word)
+                self.ans[index] = ask_one(self.api_key,self.key_word,word,self.selected_model)
                 self.return_msg(f"询问{word}完成")
                 self.ok_num += 1
                 self.present_percent()
